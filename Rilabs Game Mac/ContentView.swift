@@ -9,15 +9,24 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        Text("Hello, World!")
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
+  var body: some View {
+    RootView()
+      .frame(minWidth: 1016, maxWidth: .infinity, minHeight: 556, maxHeight: .infinity)
+  }
 }
 
+struct RootView: View {
+  var body: some View {
+    NavigationView {
+      NavigationMenuView()
+      HomeView()
+    }
+    .navigationViewStyle(DoubleColumnNavigationViewStyle())
+  }
+}
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+  static var previews: some View {
+    ContentView()
+  }
 }

@@ -9,13 +9,38 @@
 import SwiftUI
 
 struct GameItemRowView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  var game: Game
+  @ObservedObject private var imageViewModel = ImageViewModel()
+  
+  var body: some View {
+    Group {
+      if imageViewModel.image != nil {
+        HStack {
+          Image(nsImage: imageViewModel.image!)
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: 100, height: 50)
+            .cornerRadius(4)
+          
+          VStack(alignment: .leading, spacing: 4) {
+            Text("\(game.name)")
+              .font(.system(size: 14, weight: .medium, design: .rounded))
+              .lineLimit(2)
+            
+            Text("\(game.releaseDateText)")
+              .font(.system(size: 12, weight: .light, design: .rounded))
+          }
+          Spacer()
+        }
+      } else {
+        Rectangle()
+          .background(Color.gray.opacity(0.2))
+          .frame(width: 100, height: 50)
+          .cornerRadius(4)
+      }
     }
-}
-
-struct GameItemRowView_Previews: PreviewProvider {
-    static var previews: some View {
-        GameItemRowView()
+    .onAppear {
+      self.imageViewModel.loadImage(with: self.game.backgroundImageURL)
     }
+  }
 }

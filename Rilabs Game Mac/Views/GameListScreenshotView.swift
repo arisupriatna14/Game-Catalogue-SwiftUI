@@ -9,13 +9,41 @@
 import SwiftUI
 
 struct GameListScreenshotView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  var gameListScreenshots: [GameScreenshot]
+  
+  var body: some View {
+    ScrollView(.horizontal, showsIndicators: true) {
+      HStack {
+        ForEach(gameListScreenshots) { item in
+          ImageScreenshotView(gameScreenshot: item)
+        }
+      }
+      .padding([.leading, .trailing], 36)
     }
+  }
 }
 
-struct GameListScreenshotView_Previews: PreviewProvider {
-    static var previews: some View {
-        GameListScreenshotView()
+struct ImageScreenshotView: View {
+  var gameScreenshot: GameScreenshot
+  @ObservedObject var imageViewModel = ImageViewModel()
+  
+  var body: some View {
+    VStack {
+      if imageViewModel.image != nil {
+        Image(nsImage: imageViewModel.image!)
+          .resizable()
+          .aspectRatio(contentMode: .fill)
+          .frame(width: 300, height: 150)
+          .cornerRadius(20)
+      } else {
+        Rectangle()
+          .fill(Color.gray.opacity(0.2))
+          .frame(width: 300, height: 150)
+          .cornerRadius(20)
+      }
     }
+    .onAppear {
+      self.imageViewModel.loadImage(with: self.gameScreenshot.imageURL)
+    }
+  }
 }

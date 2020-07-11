@@ -15,10 +15,11 @@ struct GameDetailResponse: Decodable, Identifiable {
   let released: String?
   let genres: [GameGenre]
   let clip: GameClip?
-  let backgroundImage: String
+  let backgroundImage: String?
   let rating: Double
   
   var backgroundImageURL: URL {
+    guard let backgroundImage = backgroundImage else { return URL(string: "https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png")! }
     return URL(string: backgroundImage)!
   }
   

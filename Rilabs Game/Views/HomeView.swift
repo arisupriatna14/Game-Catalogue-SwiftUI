@@ -9,12 +9,20 @@
 import SwiftUI
 
 struct HomeView: View {
-  @ObservedObject private var gameViewModel = GameListViewModel()
+  @ObservedObject var gameViewModel = GameListViewModel()
+  
+  init() {
+    self.gameViewModel.loadGames()
+  }
   
   var body: some View {
     NavigationView {
-      ScrollView {
+      ScrollView(.vertical) {
         HeaderView(title: "Trending")
+        
+        if gameViewModel.isLoading {
+          LoadingView()
+        }
         
         if gameViewModel.games != nil {
           ForEach(self.gameViewModel.games!) { game in
@@ -22,15 +30,10 @@ struct HomeView: View {
               GameItem(game: game)
             }.buttonStyle(PlainButtonStyle())
           }
-        } else {
-          LoadingView()
         }
       }
       .navigationBarTitle("Trending")
       .navigationBarHidden(true)
-      .onAppear {
-        self.gameViewModel.loadGames()
-      }
     }
   }
 }

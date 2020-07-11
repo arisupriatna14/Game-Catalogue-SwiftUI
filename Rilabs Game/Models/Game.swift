@@ -12,13 +12,14 @@ struct GameResponse: Decodable {
   let results: [Game]
 }
 
-struct Game: Decodable, Identifiable {
+struct Game: Decodable, Identifiable, Hashable {
   let id: Int
   let name: String
   let released: String?
-  let backgroundImage: String
+  let backgroundImage: String?
   
   var backgroundImageURL: URL {
+    guard let backgroundImage = backgroundImage else { return URL(string: "https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png")! }
     return URL(string: backgroundImage)!
   }
   

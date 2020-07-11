@@ -17,8 +17,7 @@ struct SearchNotFound: View {
         .frame(width: 300, height: 250)
       
       Text("No Result")
-        .font(.title)
-        .bold()
+        .font(.system(.title, design: .rounded))
     }
   }
 }

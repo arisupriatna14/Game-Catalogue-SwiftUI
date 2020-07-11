@@ -10,7 +10,7 @@ import SwiftUI
 
 struct LoadingView: View {
   var body: some View {
-    VStack {
+    VStack(alignment: .center) {
       CustomActivityIndicatorView()
       
       Text("Loading".uppercased())

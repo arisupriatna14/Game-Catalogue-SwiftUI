@@ -12,20 +12,21 @@ struct GameItem: View {
   var game: Game
   @ObservedObject var imageViewModel = ImageViewModel()
   @State private var image: UIImage?
+  @State private var opacity: Double = 0.25
   
   var body: some View {
     VStack {
-      if imageViewModel.image != nil {
-        Image(uiImage: imageViewModel.image!)
-          .resizable()
-          .aspectRatio(contentMode: .fill)
-          .frame(width: UIScreen.main.bounds.width - 48, height: 250)
-          .cornerRadius(20)
-      } else {
-        Rectangle()
-          .fill(Color.gray.opacity(0.2))
-          .cornerRadius(20)
-          .frame(height: 350)
+      Group {
+        if imageViewModel.image != nil {
+          Image(uiImage: imageViewModel.image!)
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: UIScreen.main.bounds.width - 48, height: 250)
+            .cornerRadius(20)
+        } else {
+          ShimmerView(opacity: $opacity)
+            .frame(height: 350)
+        }
       }
       
       HStack {

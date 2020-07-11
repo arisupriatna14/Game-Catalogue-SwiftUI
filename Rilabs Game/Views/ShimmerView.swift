@@ -9,13 +9,19 @@
 import SwiftUI
 
 struct ShimmerView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-struct ShimmerView_Previews: PreviewProvider {
-    static var previews: some View {
-        ShimmerView()
-    }
+  @Binding var opacity: Double
+  
+  var body: some View {
+    Rectangle()
+      .fill(Color.gray.opacity(0.25))
+      .cornerRadius(20)
+      .opacity(opacity)
+      .onAppear {
+        let baseAnimation = Animation.easeInOut(duration: 0.9)
+        let repeated = baseAnimation.repeatForever(autoreverses: true)
+        withAnimation(repeated) {
+          self.opacity = 1.0
+        }
+      }
+  }
 }

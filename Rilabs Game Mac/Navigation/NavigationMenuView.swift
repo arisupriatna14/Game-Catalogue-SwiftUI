@@ -9,13 +9,39 @@
 import SwiftUI
 
 struct NavigationMenuView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  @State var selection: String? = "Home"
+  
+  var body: some View {
+    List {
+      Section(header: TextHeader(title: "Discover")) {
+        NavigationLink(destination: HomeView(), tag: "Home", selection: $selection) {
+          Text("Home")
+        }
+      }
+      
+      Section(header: TextHeader(title: "Browse")) {
+        ForEach(Browse.allCases) { item in
+          NavigationLink(destination: NavigationDetailView(), tag: item.rawValue, selection: self.$selection) {
+            Text(item.description)
+          }
+        }
+      }
     }
+    .listStyle(SidebarListStyle())
+    .frame(minWidth: 200, idealWidth: 200, maxWidth: 248, maxHeight: .infinity)
+  }
+}
+
+struct TextHeader: View {
+  var title: String
+  
+  var body: some View {
+    Text(title).font(.system(size: 14))
+  }
 }
 
 struct NavigationMenuView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationMenuView()
-    }
+  static var previews: some View {
+    NavigationMenuView()
+  }
 }

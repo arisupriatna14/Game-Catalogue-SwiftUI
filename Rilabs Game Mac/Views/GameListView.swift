@@ -9,13 +9,16 @@
 import SwiftUI
 
 struct GameListView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  var games: [Game]
+  
+  var body: some View {
+    ScrollView(.horizontal) {
+      HStack(spacing: 24) {
+        ForEach(games) { game in
+          GameItemView(game: game)
+        }
+      }
+      .padding([.leading, .trailing], 30)
     }
-}
-
-struct GameListView_Previews: PreviewProvider {
-    static var previews: some View {
-        GameListView()
-    }
+  }
 }

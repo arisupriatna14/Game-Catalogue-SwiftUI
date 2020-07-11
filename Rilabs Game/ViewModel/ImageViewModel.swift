@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 private let _imageCache = NSCache<AnyObject, AnyObject>()
 private let _colorCache = NSCache<AnyObject, AnyObject>()
@@ -25,12 +25,9 @@ class ImageViewModel: ObservableObject {
   func loadImage(with url: URL) {
     let urlString = url.absoluteString
     
-    if let imageFromCache = imageCache.object(forKey: urlString as AnyObject) as? UIImage {
+    if let imageFromCache = imageCache.object(forKey: urlString as AnyObject) as? UIImage,
+      let colorFromCache = colorCache.object(forKey: urlString as AnyObject) as? Color {
       self.image = imageFromCache
-      return
-    }
-    
-    if let colorFromCache = colorCache.object(forKey: urlString as AnyObject) as? Color {
       self.color = colorFromCache
       return
     }

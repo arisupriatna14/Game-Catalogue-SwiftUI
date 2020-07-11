@@ -9,13 +9,24 @@
 import SwiftUI
 
 struct GameListDetailView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  @ObservedObject var gameListViewModel: GameListViewModel
+  @Binding var selectedGame: Game?
+  
+  var body: some View {
+    List(selection: self.$selectedGame) {
+      if gameListViewModel.isLoading {
+        LoadingView()
+      }
+      
+      if self.gameListViewModel.games != nil {
+        ForEach(self.gameListViewModel.games!) { game in
+          GameItemRowView(game: game)
+            .tag(game)
+        }
+      }
     }
-}
-
-struct GameListDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        GameListDetailView()
+    .onAppear {
+      self.gameListViewModel.loadGames()
     }
+  }
 }

@@ -26,6 +26,7 @@ struct GameListScreenshotView: View {
 struct ImageScreenshotView: View {
   var gameScreenshot: GameScreenshot
   @ObservedObject var imageViewModel = ImageViewModel()
+  @State private var opacity: Double = 0.25
   
   var body: some View {
     VStack {
@@ -36,10 +37,8 @@ struct ImageScreenshotView: View {
           .frame(width: 300, height: 150)
           .cornerRadius(20)
       } else {
-        Rectangle()
-          .fill(Color.gray.opacity(0.2))
+        ShimmerView(opacity: $opacity)
           .frame(width: 300, height: 150)
-          .cornerRadius(20)
       }
     }
     .onAppear {

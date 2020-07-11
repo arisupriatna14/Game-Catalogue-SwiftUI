@@ -14,7 +14,14 @@ struct GameDetailView: View {
   
   @ObservedObject var imageViewModel = ImageViewModel()
   @ObservedObject var gameDetailViewModel = GameDetailViewModel()
-  @ObservedObject var gameListScreenshotsViewModelc = GameListScreenshotViewModel()
+  @ObservedObject var gameListScreenshotsViewModel = GameListScreenshotViewModel()
+  
+  init(game: Game) {
+    self.game = game
+    self.gameDetailViewModel.loadGame(id: self.game.id)
+    self.imageViewModel.loadImage(with: self.game.backgroundImageURL)
+    self.gameListScreenshotsViewModel.loadGameScreenshots(id: self.game.id)
+  }
   
   var body: some View {
     ScrollView(.vertical, showsIndicators: true) {
@@ -23,8 +30,10 @@ struct GameDetailView: View {
           if imageViewModel.image != nil {
             Image(nsImage: imageViewModel.image!)
               .resizable()
-              .aspectRatio(contentMode: .fit)
-              .frame(height: 280)
+              .aspectRatio(contentMode: .fill)
+              .frame(width: 556, height: 300)
+              .cornerRadius(20)
+              .padding(30)
           } else {
             Rectangle()
               .fill(Color.gray.opacity(0.2))
@@ -64,32 +73,29 @@ struct GameDetailView: View {
             Text("\(gameDetailViewModel.game?.descriptionRaw ?? "-")")
               .padding(.bottom, 8)
           }
-          .padding(.top, 16)
-          .padding([.leading, .trailing, .bottom], 24)
+          .padding([.top, .bottom], 16)
+          .padding([.leading, .trailing], 36)
           
           VStack(alignment: .leading) {
             Text("Screenshots")
               .font(.headline)
               .padding(.bottom, 8)
-              .padding(.leading, 24)
+              .padding(.leading, 36)
             
-//            if gameListScreenshotsViewModelc.gameScreenshot != nil {
-//              GameListScreenshotView(gameListScreenshots: gameListScreenshotsViewModelc.gameScreenshot!)
-//                .padding(.bottom, 16)
-//            } else {
-//              LoadingView()
-//            }
+            if gameListScreenshotsViewModel.gameScreenshot != nil {
+              GameListScreenshotView(gameListScreenshots: gameListScreenshotsViewModel.gameScreenshot!)
+                .padding(.bottom, 36)
+            } else {
+              VStack(alignment: .center) {
+                LoadingView()
+              }
+            }
           }
         } else {
           LoadingView()
         }
       }
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-    .onAppear {
-      self.gameDetailViewModel.loadGame(id: self.game.id)
-      self.gameListScreenshotsViewModelc.loadGameScreenshots(id: self.game.id)
-      self.imageViewModel.loadImage(with: self.game.backgroundImageURL)
+      .frame(minWidth: 556, maxWidth: 556, maxHeight: .infinity)
     }
   }
 }

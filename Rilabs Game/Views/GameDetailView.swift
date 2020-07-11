@@ -14,10 +14,11 @@ struct GameDetailView: View {
   
   @ObservedObject var imageViewModel = ImageViewModel()
   @ObservedObject var gameDetailViewModel = GameDetailViewModel()
-  @ObservedObject var gameListScreenshotsViewModelc = GameListScreenshotViewModel()
+  @ObservedObject var gameListScreenshotsViewModel = GameListScreenshotViewModel()
+  @State private var opacity: Double = 0.25
   
   var body: some View {
-    ScrollView {
+    ScrollView(.vertical, showsIndicators: false) {
       VStack(alignment: .leading) {
         if gameDetailViewModel.game != nil {
           if gameDetailViewModel.game?.clip != nil {
@@ -29,8 +30,7 @@ struct GameDetailView: View {
               .aspectRatio(contentMode: .fit)
               .frame(height: 280)
           } else {
-            Rectangle()
-              .fill(Color.gray.opacity(0.2))
+            ShimmerView(opacity: $opacity)
               .frame(height: 280)
           }
           
@@ -76,8 +76,8 @@ struct GameDetailView: View {
               .padding(.bottom, 8)
               .padding(.leading, 24)
             
-            if gameListScreenshotsViewModelc.gameScreenshot != nil {
-              GameListScreenshotView(gameListScreenshots: gameListScreenshotsViewModelc.gameScreenshot!)
+            if gameListScreenshotsViewModel.gameScreenshot != nil {
+              GameListScreenshotView(gameListScreenshots: gameListScreenshotsViewModel.gameScreenshot!)
                 .padding(.bottom, 16)
             } else {
               LoadingView()
@@ -92,7 +92,7 @@ struct GameDetailView: View {
     }
     .onAppear {
       self.gameDetailViewModel.loadGame(id: self.game.id)
-      self.gameListScreenshotsViewModelc.loadGameScreenshots(id: self.game.id)
+      self.gameListScreenshotsViewModel.loadGameScreenshots(id: self.game.id)
       self.imageViewModel.loadImage(with: self.game.backgroundImageURL)
     }
   }
