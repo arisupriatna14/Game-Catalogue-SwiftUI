@@ -26,7 +26,7 @@ struct SearchGameView: View {
         
         if searchGameViewModel.isLoading {
           LoadingView()
-        } else if searchGameViewModel.isEmptyResult {
+        } else if searchGameViewModel.isEmptyResult || (searchGameViewModel.error != nil) {
           SearchNotFound()
           Spacer()
         }
@@ -38,6 +38,9 @@ struct SearchGameView: View {
             }
             .buttonStyle(PlainButtonStyle())
           }
+        } else if !searchGameViewModel.isLoading {
+          SearchNotFound()
+          Spacer()
         }
         
         Spacer()

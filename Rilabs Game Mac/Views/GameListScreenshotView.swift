@@ -1,8 +1,8 @@
 //
 //  GameListScreenshotView.swift
-//  Rilabs Game
+//  Rilabs Game Mac
 //
-//  Created by Ari Supriatna on 03/07/20.
+//  Created by Ari Supriatna on 08/07/20.
 //  Copyright © 2020 Ari Supriatna. All rights reserved.
 //
 
@@ -12,13 +12,13 @@ struct GameListScreenshotView: View {
   var gameListScreenshots: [GameScreenshot]
   
   var body: some View {
-    ScrollView(.horizontal, showsIndicators: false) {
+    ScrollView(.horizontal, showsIndicators: true) {
       HStack {
         ForEach(gameListScreenshots) { item in
           ImageScreenshotView(gameScreenshot: item)
         }
       }
-      .padding([.leading, .trailing], 24)
+      .padding([.leading, .trailing], 36)
     }
   }
 }
@@ -26,19 +26,20 @@ struct GameListScreenshotView: View {
 struct ImageScreenshotView: View {
   var gameScreenshot: GameScreenshot
   @ObservedObject var imageViewModel = ImageViewModel()
-  @State private var opacity: Double = 0.25
   
   var body: some View {
     VStack {
       if imageViewModel.image != nil {
-        Image(uiImage: imageViewModel.image!)
+        Image(nsImage: imageViewModel.image!)
           .resizable()
           .aspectRatio(contentMode: .fill)
           .frame(width: 300, height: 150)
           .cornerRadius(20)
       } else {
-        ShimmerView(opacity: $opacity)
+        Rectangle()
+          .fill(Color.gray.opacity(0.2))
           .frame(width: 300, height: 150)
+          .cornerRadius(20)
       }
     }
     .onAppear {
