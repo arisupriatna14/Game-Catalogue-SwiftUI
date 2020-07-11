@@ -11,21 +11,24 @@ import SwiftUI
 struct ProfileView: View {
   var body: some View {
     ScrollView {
-      VStack {
+      VStack(alignment: .leading) {
         HStack {
           Image("ari")
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .clipShape(Circle())
-            .frame(width: 100, height: 100)
+            .frame(width: 80, height: 80)
+            .cornerRadius(20)
           
           VStack(alignment: .leading) {
             Text("Ari Supriatna")
               .font(.system(size: 24))
+              .bold()
             
             HStack {
-              Image(systemName: "star.fill")
-              Text("6250 XP")
+              Image("apple")
+                .resizable()
+                .frame(width: 27, height: 27)
+              Text("iOS Developer")
                 .font(.system(size: 18))
             }
           }
@@ -35,23 +38,54 @@ struct ProfileView: View {
         }
         .padding(24)
         
-        BoxView(title: "Belajar", headline: "24", subheadline: "Kelas Akademi")
-          .background(Color(#colorLiteral(red: 0.07058823529, green: 0.7725490196, blue: 0.7764705882, alpha: 1)))
-          .cornerRadius(20)
-          .padding(.bottom, 16)
+        VStack(alignment: .leading) {
+          HStack {
+            Image("instagram")
+              .resizable()
+              .frame(width: 27, height: 27)
+            Text("@arisupriatna1408")
+              .font(.system(size: 18))
+          }
+          
+          HStack {
+            Image("gmail")
+              .resizable()
+              .frame(width: 27, height: 27)
+            Text("arisupriatna703@gmail.com")
+              .font(.system(size: 18))
+          }
+          
+          HStack {
+            Image("linkedin")
+              .resizable()
+              .frame(width: 27, height: 27)
+            Text("Ari Supriatna")
+              .font(.system(size: 18))
+          }
+          
+          Divider()
+            .padding(.top, 16)
+        }
+        .padding([.leading, .trailing], 24)
         
-        BoxView(title: "Memenangkan", headline: "2", subheadline: "Challenge")
-          .background(Color(#colorLiteral(red: 0.7019607843, green: 0.4705882353, blue: 0.8235294118, alpha: 1)))
-          .cornerRadius(20)
-          .padding(.bottom, 16)
-        
-        BoxView(title: "Menghadiri", headline: "16", subheadline: "Event")
-          .background(Color(#colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)))
-          .cornerRadius(20)
-          .padding(.bottom, 16)
+        VStack(alignment: .leading) {
+          Text("About Me")
+            .font(.system(size: 18, weight: .medium, design: .rounded))
+            .bold()
+          
+          Text("I currently live in Jakarta, I come from Banten. I graduated from the department of higher education in 2017. I am interested in programming and this has been a hobby since I was in high school, I learned self-taught programming. After I graduated from high school, I joined Bootcamp Hacktiv8 to learn programming. Besides liking programming, I also like the challenges and new things about technology. My current expertise is ExpressJs, Nodejs, Vuejs, ReactJs, React Native, MongoDB, AWS, Google Cloud Platform, etc. ")
+            .padding(.top, 16)
+        }
+        .padding([.leading, .trailing], 24)
         
         Spacer()
       }
     }
+  }
+}
+
+struct ProfileView_Previews: PreviewProvider {
+  static var previews: some View {
+    ProfileView()
   }
 }
