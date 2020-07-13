@@ -37,7 +37,6 @@ struct SearchItemView: View {
       
       Spacer()
     }
-    .padding([.leading, .trailing, .bottom], 16)
     .onAppear {
       self.imageViewModel.loadImage(with: self.game.backgroundImageURL)
     }

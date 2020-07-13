@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+class Constant {
+  static let imagePlaceholder = "https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png"
+}

@@ -9,7 +9,8 @@
 import SwiftUI
 
 struct HomeView: View {
-  @ObservedObject var gameViewModel = GameListViewModel()
+  @ObservedObject private var gameViewModel = GameListViewModel()
+  @State private var isShowing = false
   
   init() {
     self.gameViewModel.loadGames()
@@ -30,6 +31,10 @@ struct HomeView: View {
               GameItem(game: game)
             }.buttonStyle(PlainButtonStyle())
           }
+        }
+        
+        if gameViewModel.error != nil {
+          CustomEmptyView(title: "No Connection", image: "asset-no-network")
         }
       }
       .navigationBarTitle("Trending")

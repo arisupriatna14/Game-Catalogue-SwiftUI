@@ -8,15 +8,18 @@
 
 import SwiftUI
 
-struct SearchNotFound: View {
+struct CustomEmptyView: View {
+  var title: String
+  var image: String
+  
   var body: some View {
     VStack {
-      Image("asset-search")
+      Image(image)
         .resizable()
         .aspectRatio(contentMode: .fill)
         .frame(width: 300, height: 250)
       
-      Text("No Result")
+      Text(title)
         .font(.system(.title, design: .rounded))
     }
   }

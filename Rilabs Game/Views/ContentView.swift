@@ -28,6 +28,11 @@ struct ContentView: View {
           TabItem(imageName: "gamecontroller", title: "Home")
       }
       
+      FavoriteView()
+        .tabItem {
+          TabItem(imageName: "heart.fill", title: "Favorite")
+      }
+      
       SearchGameView()
         .tabItem {
           TabItem(imageName: "magnifyingglass", title: "Search")

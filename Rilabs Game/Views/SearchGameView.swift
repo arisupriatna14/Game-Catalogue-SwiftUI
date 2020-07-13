@@ -27,7 +27,7 @@ struct SearchGameView: View {
         if searchGameViewModel.isLoading {
           LoadingView()
         } else if searchGameViewModel.isEmptyResult || (searchGameViewModel.error != nil) {
-          SearchNotFound()
+          CustomEmptyView(title: "No Result", image: "asset-search")
           Spacer()
         }
         
@@ -35,11 +35,12 @@ struct SearchGameView: View {
           ForEach(searchGameViewModel.games!) { game in
             NavigationLink(destination: GameDetailView(game: game)) {
               SearchItemView(game: game)
+                .padding([.leading, .trailing, .bottom], 16)
             }
             .buttonStyle(PlainButtonStyle())
           }
         } else if !searchGameViewModel.isLoading {
-          SearchNotFound()
+          CustomEmptyView(title: "No Result", image: "asset-search")
           Spacer()
         }
         

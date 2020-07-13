@@ -19,7 +19,7 @@ struct Game: Decodable, Identifiable, Hashable {
   let backgroundImage: String?
   
   var backgroundImageURL: URL {
-    guard let backgroundImage = backgroundImage else { return URL(string: "https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png")! }
+    guard let backgroundImage = backgroundImage else { return URL(string: Constant.imagePlaceholder)! }
     return URL(string: backgroundImage)!
   }
   
