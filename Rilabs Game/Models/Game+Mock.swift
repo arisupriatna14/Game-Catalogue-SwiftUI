@@ -10,13 +10,13 @@ import Foundation
 
 extension Game {
   static var mockDataGames: [Game] {
-    let responseData: GameResponse? = try? Bundle.main.loadAndDecodeJSON(filename: "game_mock_data.json")
+    let responseData: GameResponse? = try? Bundle.main.loadAndDecodeJSON(filename: "mock_data_game")
     
     return responseData!.results
   }
   
   static var mockDataGame: Game {
-    return mockDataGames[0]
+    mockDataGames[0]
   }
 }
 
