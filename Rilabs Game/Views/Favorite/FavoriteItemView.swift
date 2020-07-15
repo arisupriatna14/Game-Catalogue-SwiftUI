@@ -9,22 +9,7 @@
 import SwiftUI
 
 struct FavoriteItemView: View {
-  var gameFavorite: Favorite
-  
-  static private let dateFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "MMM d, yyyy"
-    return formatter
-  }()
-  
-  var releaseDateText: String {
-    guard let releaseDate = self.gameFavorite.released, let date = Utils.dateFormatter.date(from: releaseDate) else {
-      return "n/a"
-    }
-    
-    return FavoriteItemView.dateFormatter.string(from: date)
-  }
-  
+  @ObservedObject var favoriteViewModel: FavoriteGameViewModel
   @ObservedObject private var imageViewModel = ImageViewModel()
   @State private var opacity: Double = 0.25
   
@@ -42,10 +27,10 @@ struct FavoriteItemView: View {
       }
       
       VStack(alignment: .leading) {
-        Text("\(gameFavorite.name ?? "")")
+        Text("\(favoriteViewModel.favorite.name ?? "")")
           .font(.headline)
         
-        Text("\(releaseDateText)")
+        Text("\(favoriteViewModel.releaseDateText)")
           .font(.subheadline)
           .padding(.top, 8)
       }
@@ -53,7 +38,7 @@ struct FavoriteItemView: View {
       Spacer()
     }
     .onAppear {
-      self.imageViewModel.loadImage(with: URL(string: self.gameFavorite.backgroundImage!)!)
+      self.imageViewModel.loadImage(with: URL(string: self.favoriteViewModel.favorite.backgroundImage!)!)
     }
   }
 }

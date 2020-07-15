@@ -25,7 +25,7 @@ struct GameItem: View {
             .cornerRadius(20)
         } else {
           ShimmerView(opacity: $opacity)
-            .frame(height: 350)
+            .frame(height: 250)
         }
       }
       
@@ -50,12 +50,14 @@ struct GameItem: View {
       .padding([.leading, .trailing, .bottom], 24)
     }
     .frame(width: UIScreen.main.bounds.width - 48, height: 320)
-    .background(imageViewModel.color)
+    .background(imageViewModel.color ?? Color.gray.opacity(0.15))
     .cornerRadius(20)
     .shadow(color: imageViewModel.color?.opacity(0.3) ?? Color.black.opacity(0.2), radius: 10, x: 0, y: 10)
     .padding(8)
     .onAppear {
-      self.imageViewModel.loadImage(with: self.game.backgroundImageURL)
+      if !(self.imageViewModel.image != nil) {
+        self.imageViewModel.loadImage(with: self.game.backgroundImageURL)
+      }
     }
   }
 }

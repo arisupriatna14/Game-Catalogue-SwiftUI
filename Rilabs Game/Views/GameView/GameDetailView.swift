@@ -11,13 +11,11 @@ import CoreData
 
 struct GameDetailView: View {
   var game: Game
-  var showContent: Bool = true
-  @State var isFavorite = false
-  
   @Environment(\.managedObjectContext) private var managedObjectContext
   @ObservedObject private var imageViewModel = ImageViewModel()
   @ObservedObject private var gameDetailViewModel = GameDetailViewModel()
   @ObservedObject private var gameListScreenshotsViewModel = GameListScreenshotViewModel()
+  @State var isFavorite = false
   @State private var opacity: Double = 0.25
   private var favoriteRequest: FetchRequest<Favorite>
   private var gameProvider: GameProvider = GameProvider()
@@ -140,10 +138,12 @@ struct GameDetailView: View {
       .navigationBarTitle(game.name)
     }
     .onAppear {
-      self.checkStatusFavorite()
-      self.gameDetailViewModel.loadGame(id: self.game.id)
-      self.gameListScreenshotsViewModel.loadGameScreenshots(id: self.game.id)
-      self.imageViewModel.loadImage(with: self.game.backgroundImageURL)
+      if !(self.gameDetailViewModel.game != nil) && !(self.gameListScreenshotsViewModel.gameScreenshot != nil) {
+        self.checkStatusFavorite()
+        self.gameDetailViewModel.loadGame(id: self.game.id)
+        self.gameListScreenshotsViewModel.loadGameScreenshots(id: self.game.id)
+        self.imageViewModel.loadImage(with: self.game.backgroundImageURL)
+      }
     }
   }
   

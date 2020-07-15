@@ -34,7 +34,7 @@ struct FavoriteView: View {
             released: favorite.released,
             backgroundImage: favorite.backgroundImage)
           )) {
-            FavoriteItemView(gameFavorite: favorite)
+            FavoriteItemView(favoriteViewModel: FavoriteGameViewModel(favorite: favorite))
           }
         }
         .onDelete(perform: deleteGameFavorite)
