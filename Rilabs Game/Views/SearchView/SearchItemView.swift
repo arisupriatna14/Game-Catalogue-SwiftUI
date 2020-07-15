@@ -29,6 +29,9 @@ struct SearchItemView: View {
       VStack(alignment: .leading) {
         Text(game.name)
           .font(.headline)
+          .lineLimit(2)
+        
+        RatingView(rating: "\(game.ratingText)")
         
         Text(game.releaseDateText)
           .font(.subheadline)

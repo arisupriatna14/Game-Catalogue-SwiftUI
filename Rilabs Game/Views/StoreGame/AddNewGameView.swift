@@ -12,6 +12,8 @@ struct AddNewGameView: View {
   @Environment(\.managedObjectContext) var managedObjectContext
   
   @State private var showImagePicker = false
+  @State private var showAlert = false
+  @State private var alertMessage = ""
   @State private var inputImage: UIImage?
   @State private var image: Image?
   
@@ -21,7 +23,6 @@ struct AddNewGameView: View {
   @State private var description = ""
   @Binding var isPresented: Bool
   
-  var gameProvider: GameProvider = GameProvider()
   let onComplete: (String, String, Date, Data) -> ()
   
   var body: some View {
@@ -64,6 +65,9 @@ struct AddNewGameView: View {
           }
         }
       }
+    .alert(isPresented: self.$showAlert) {
+      Alert(title: Text("Warning"), message: Text(self.alertMessage), dismissButton: .default(Text("OK")))
+    }
       .navigationBarTitle("Add New Game", displayMode: .inline)
       .navigationBarItems(
         leading: Button(action: { self.isPresented.toggle() }) {
@@ -83,9 +87,23 @@ struct AddNewGameView: View {
   }
   
   private func addNewGame() {
-    self.isPresented.toggle()
-    if let backgroundImage = backgroundImage?.pngData() as NSData? {
-      onComplete(titleGame, description, releaseDate, backgroundImage as Data)
+    if titleGame.isEmpty {
+      self.alertMessage = "Title game is required"
+      self.showAlert.toggle()
+    } else if description.isEmpty {
+      self.alertMessage = "Description is required"
+      self.showAlert.toggle()
+    } else if let backgroundImage = backgroundImage?.pngData() as NSData? {
+      self.isPresented.toggle()
+      onComplete(
+        titleGame,
+        description,
+        releaseDate,
+        backgroundImage as Data
+      )
+    } else {
+      self.alertMessage = "Image is required"
+      self.showAlert.toggle()
     }
   }
 }

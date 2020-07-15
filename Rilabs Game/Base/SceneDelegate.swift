@@ -55,23 +55,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
 
   func sceneDidEnterBackground(_ scene: UIScene) {
-    saveContext()
+    
   }
-  
-  func saveContext() {
-    let context = GameProvider().viewContext
-    if context.hasChanges {
-      do {
-        try context.save()
-      } catch {
-        // The context couldn't be saved.
-        // You should add your own error handling here.
-        let nserror = error as NSError
-        fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-      }
-    }
-  }
-
-
 }
 

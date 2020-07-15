@@ -9,13 +9,16 @@
 import SwiftUI
 
 struct RatingView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  var rating: String
+  
+  var body: some View {
+    HStack {
+      Image(systemName: "star.fill")
+        .foregroundColor(.yellow)
+      Text(rating)
+        .font(.headline)
+        .bold()
+        .foregroundColor(Color(#colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)))
     }
-}
-
-struct RatingView_Previews: PreviewProvider {
-    static var previews: some View {
-        RatingView()
-    }
+  }
 }

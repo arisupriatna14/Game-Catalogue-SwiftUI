@@ -17,6 +17,7 @@ struct Game: Decodable, Identifiable, Hashable {
   let name: String
   let released: String?
   let backgroundImage: String?
+  let rating: Double
   
   var backgroundImageURL: URL {
     guard let backgroundImage = backgroundImage else { return URL(string: Constant.imagePlaceholder)! }
@@ -35,6 +36,10 @@ struct Game: Decodable, Identifiable, Hashable {
     }
     
     return Game.dateFormatter.string(from: date)
+  }
+  
+  var ratingText: String {
+    return String(rating)
   }
 }
 

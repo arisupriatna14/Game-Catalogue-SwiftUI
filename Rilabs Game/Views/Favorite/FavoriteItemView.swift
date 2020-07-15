@@ -30,6 +30,8 @@ struct FavoriteItemView: View {
         Text("\(favoriteViewModel.favorite.name ?? "")")
           .font(.headline)
         
+        RatingView(rating: "\(favoriteViewModel.ratingText)")
+        
         Text("\(favoriteViewModel.releaseDateText)")
           .font(.subheadline)
           .padding(.top, 8)

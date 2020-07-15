@@ -30,21 +30,24 @@ struct GameItem: View {
       }
       
       HStack {
-        Text(game.name)
-          .font(.headline)
-          .bold()
-          .foregroundColor(.white)
-          .lineLimit(2)
+        VStack(alignment: .leading) {
+          Text(game.name)
+            .font(.headline)
+            .bold()
+            .foregroundColor(.white)
+            .lineLimit(2)
+          
+          Text(game.releaseDateText)
+            .font(.caption)
+            .foregroundColor(.white)
+        }
         
         Spacer()
         
-        Text("Get".uppercased())
-          .font(.headline)
-          .bold()
-          .foregroundColor(Color(#colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)))
-          .frame(width: 70, height: 30)
+        RatingView(rating: "\(game.ratingText)")
+          .frame(width: 90, height: 40)
           .background(Color.white.opacity(0.5))
-          .cornerRadius(15)
+          .cornerRadius(20)
       }
       .padding(.top, 16)
       .padding([.leading, .trailing, .bottom], 24)

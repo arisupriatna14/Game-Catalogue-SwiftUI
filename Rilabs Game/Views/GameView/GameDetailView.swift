@@ -15,10 +15,9 @@ struct GameDetailView: View {
   @ObservedObject private var imageViewModel = ImageViewModel()
   @ObservedObject private var gameDetailViewModel = GameDetailViewModel()
   @ObservedObject private var gameListScreenshotsViewModel = GameListScreenshotViewModel()
-  @State var isFavorite = false
+  @State private var isFavorite = false
   @State private var opacity: Double = 0.25
   private var favoriteRequest: FetchRequest<Favorite>
-  private var gameProvider: GameProvider = GameProvider()
   
   init(game: Game) {
     self.game = game
@@ -30,23 +29,16 @@ struct GameDetailView: View {
   }
   
   private func toogleFavorite() {
-    if let _ = self.favoriteRequest.wrappedValue.first?.id {
-      if !isFavorite {
-        isFavorite = true
-        addFavorite()
-      }
-    } else {
+    if !(self.favoriteRequest.wrappedValue.first?.id != nil) {
       isFavorite = true
       addFavorite()
     }
   }
   
   private func checkStatusFavorite() {
-    if let favoriteId = self.favoriteRequest.wrappedValue.first?.id {
-      if Int32(game.id) == favoriteId {
-        isFavorite = true
-      }
-    }  else {
+    if self.favoriteRequest.wrappedValue.first?.id != nil {
+      isFavorite = true
+    } else {
       isFavorite = false
     }
   }
@@ -76,8 +68,11 @@ struct GameDetailView: View {
             HStack {
               Text("Rating: ")
                 .font(.headline)
-              Text("\(gameDetailViewModel.game?.ratingText ?? "-") ⭐️")
+              
+              RatingView(rating: "\(gameDetailViewModel.game?.ratingText ?? "-")")
+              
               Spacer()
+              
               Button(action: toogleFavorite) {
                 Image(systemName: "heart.fill")
                   .font(.system(size: 16, weight: .medium))
@@ -138,8 +133,8 @@ struct GameDetailView: View {
       .navigationBarTitle(game.name)
     }
     .onAppear {
+      self.checkStatusFavorite()
       if !(self.gameDetailViewModel.game != nil) && !(self.gameListScreenshotsViewModel.gameScreenshot != nil) {
-        self.checkStatusFavorite()
         self.gameDetailViewModel.loadGame(id: self.game.id)
         self.gameListScreenshotsViewModel.loadGameScreenshots(id: self.game.id)
         self.imageViewModel.loadImage(with: self.game.backgroundImageURL)
@@ -149,12 +144,13 @@ struct GameDetailView: View {
   
   private func addFavorite() {
     let newFavorite = Favorite(context: managedObjectContext)
-    
+
     newFavorite.id = Int32(game.id)
     newFavorite.name = game.name
     newFavorite.released = game.released
     newFavorite.backgroundImage = game.backgroundImage
-    
+    newFavorite.rating = game.rating
+
     saveContext()
   }
   
