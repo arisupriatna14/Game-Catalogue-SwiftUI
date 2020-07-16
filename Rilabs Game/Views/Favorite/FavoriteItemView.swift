@@ -7,24 +7,24 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct FavoriteItemView: View {
   @ObservedObject var favoriteViewModel: FavoriteGameViewModel
-  @ObservedObject private var imageViewModel = ImageViewModel()
   @State private var opacity: Double = 0.25
   
   var body: some View {
     HStack {
-      if imageViewModel.image != nil {
-        Image(uiImage: imageViewModel.image!)
-          .resizable()
-          .aspectRatio(contentMode: .fill)
-          .frame(width: 100, height: 100)
-          .cornerRadius(20)
-      } else {
-        ShimmerView(opacity: $opacity)
-          .frame(width: 100, height: 100)
-      }
+      WebImage(url: URL(string: self.favoriteViewModel.favorite.backgroundImage ?? "")!)
+        .resizable()
+        .renderingMode(.original)
+        .placeholder(content: {
+          ShimmerView(opacity: $opacity)
+            .frame(width: 100, height: 100)
+        })
+        .aspectRatio(contentMode: .fill)
+        .frame(width: 100, height: 100)
+        .cornerRadius(20)
       
       VStack(alignment: .leading) {
         Text("\(favoriteViewModel.favorite.name ?? "")")
@@ -38,9 +38,6 @@ struct FavoriteItemView: View {
       }
       
       Spacer()
-    }
-    .onAppear {
-      self.imageViewModel.loadImage(with: URL(string: self.favoriteViewModel.favorite.backgroundImage!)!)
     }
   }
 }

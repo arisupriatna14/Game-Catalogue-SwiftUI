@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -81,6 +81,7 @@
 		86B55B7724AE05F3000C38AE /* SearchGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B55B7624AE05F3000C38AE /* SearchGameViewModel.swift */; };
 		86B55B7924AE1A15000C38AE /* GameDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B55B7824AE1A15000C38AE /* GameDetailView.swift */; };
 		86B55B7B24AE23C5000C38AE /* SearchItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B55B7A24AE23C4000C38AE /* SearchItemView.swift */; };
+		86C2BB0424C0B4EC005DBA87 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 86C2BB0324C0B4EC005DBA87 /* SDWebImageSwiftUI */; };
 		86C3F95824B9AA4600856867 /* FavoriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C3F95724B9AA4600856867 /* FavoriteView.swift */; };
 		86C3F95A24B9B06700856867 /* mock_data_game.json in Resources */ = {isa = PBXBuildFile; fileRef = 86C3F95924B9B06700856867 /* mock_data_game.json */; };
 		86C3F95E24B9DF4900856867 /* RilabsGame.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 86C3F95C24B9DF4900856867 /* RilabsGame.xcdatamodeld */; };
@@ -174,6 +175,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86C2BB0424C0B4EC005DBA87 /* SDWebImageSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -589,6 +591,7 @@
 			);
 			name = "Rilabs Game";
 			packageProductDependencies = (
+				86C2BB0324C0B4EC005DBA87 /* SDWebImageSwiftUI */,
 			);
 			productName = "Rilabs Game";
 			productReference = 8693FE5424ACD26300245819 /* Rilabs Game.app */;
@@ -639,6 +642,7 @@
 			);
 			mainGroup = 8693FE4B24ACD26300245819;
 			packageReferences = (
+				86C2BB0224C0B4EC005DBA87 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
 			productRefGroup = 8693FE5524ACD26300245819 /* Products */;
 			projectDirPath = "";
@@ -1019,6 +1023,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		86C2BB0224C0B4EC005DBA87 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		86C2BB0324C0B4EC005DBA87 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 86C2BB0224C0B4EC005DBA87 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		86C3F95C24B9DF4900856867 /* RilabsGame.xcdatamodeld */ = {

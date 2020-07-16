@@ -8,15 +8,16 @@
 
 import SwiftUI
 import CoreData
+import SDWebImageSwiftUI
 
 struct GameDetailView: View {
   var game: Game
   @Environment(\.managedObjectContext) private var managedObjectContext
-  @ObservedObject private var imageViewModel = ImageViewModel()
   @ObservedObject private var gameDetailViewModel = GameDetailViewModel()
   @ObservedObject private var gameListScreenshotsViewModel = GameListScreenshotViewModel()
   @State private var isFavorite = false
   @State private var opacity: Double = 0.25
+  @State private var showMore: Bool = false
   private var favoriteRequest: FetchRequest<Favorite>
   
   init(game: Game) {
@@ -54,13 +55,15 @@ struct GameDetailView: View {
           if gameDetailViewModel.game?.clip != nil {
             VideoPlayerView(url: (gameDetailViewModel.game?.clip?.clips.full)!)
               .frame(height: 280)
-          } else if imageViewModel.image != nil {
-            Image(uiImage: imageViewModel.image!)
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .frame(height: 280)
           } else {
-            ShimmerView(opacity: $opacity)
+            WebImage(url: self.game.backgroundImageURL)
+              .resizable()
+              .renderingMode(.original)
+              .placeholder(content: {
+                ShimmerView(opacity: $opacity)
+                  .frame(height: 280)
+              })
+              .aspectRatio(contentMode: .fill)
               .frame(height: 280)
           }
           
@@ -109,7 +112,14 @@ struct GameDetailView: View {
               .padding(.bottom, 8)
             
             Text("\(gameDetailViewModel.game?.descriptionRaw ?? "-")")
+              .lineLimit(self.showMore == false ? 5 : nil)
               .padding(.bottom, 8)
+            
+            if self.showMore == false {
+              Button(action: { withAnimation { self.showMore = true } }) {
+                Text("More")
+              }
+            }
           }
           .padding(.top, 16)
           .padding([.leading, .trailing, .bottom], 24)
@@ -137,7 +147,6 @@ struct GameDetailView: View {
       if !(self.gameDetailViewModel.game != nil) && !(self.gameListScreenshotsViewModel.gameScreenshot != nil) {
         self.gameDetailViewModel.loadGame(id: self.game.id)
         self.gameListScreenshotsViewModel.loadGameScreenshots(id: self.game.id)
-        self.imageViewModel.loadImage(with: self.game.backgroundImageURL)
       }
     }
   }

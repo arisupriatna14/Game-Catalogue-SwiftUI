@@ -7,27 +7,25 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct GameItem: View {
   var game: Game
-  @ObservedObject var imageViewModel = ImageViewModel()
   @State private var image: UIImage?
   @State private var opacity: Double = 0.25
   
   var body: some View {
     VStack {
-      Group {
-        if imageViewModel.image != nil {
-          Image(uiImage: imageViewModel.image!)
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .frame(width: UIScreen.main.bounds.width - 48, height: 250)
-            .cornerRadius(20)
-        } else {
+      WebImage(url: self.game.backgroundImageURL)
+        .resizable()
+        .renderingMode(.original)
+        .placeholder(content: {
           ShimmerView(opacity: $opacity)
             .frame(height: 250)
-        }
-      }
+        })
+        .aspectRatio(contentMode: .fill)
+        .frame(width: UIScreen.main.bounds.width - 48, height: 250)
+        .cornerRadius(20)
       
       HStack {
         VStack(alignment: .leading) {
@@ -53,14 +51,9 @@ struct GameItem: View {
       .padding([.leading, .trailing, .bottom], 24)
     }
     .frame(width: UIScreen.main.bounds.width - 48, height: 320)
-    .background(imageViewModel.color ?? Color.gray.opacity(0.15))
+    .background(Color(#colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)))
     .cornerRadius(20)
-    .shadow(color: imageViewModel.color?.opacity(0.3) ?? Color.black.opacity(0.2), radius: 10, x: 0, y: 10)
+    .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 10)
     .padding(8)
-    .onAppear {
-      if !(self.imageViewModel.image != nil) {
-        self.imageViewModel.loadImage(with: self.game.backgroundImageURL)
-      }
-    }
   }
 }
