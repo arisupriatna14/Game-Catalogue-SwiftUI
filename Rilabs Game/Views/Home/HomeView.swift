@@ -12,10 +12,6 @@ struct HomeView: View {
   @ObservedObject private var gameViewModel = GameListViewModel()
   @State private var isShowing = false
   
-  init() {
-    self.gameViewModel.loadGames()
-  }
-  
   var body: some View {
     NavigationView {
       ScrollView(.vertical) {
@@ -39,6 +35,11 @@ struct HomeView: View {
       }
       .navigationBarTitle("Trending")
       .navigationBarHidden(true)
+      .onAppear {
+        if !(self.gameViewModel.games?.count ?? 0 > 0) {
+          self.gameViewModel.loadGames()
+        }
+      }
     }
   }
 }

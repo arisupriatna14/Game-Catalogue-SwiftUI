@@ -24,13 +24,7 @@ struct ProfileView: View {
               .font(.system(size: 24))
               .bold()
             
-            HStack {
-              Image("apple")
-                .resizable()
-                .frame(width: 27, height: 27)
-              Text("iOS Developer")
-                .font(.system(size: 18))
-            }
+            SocialMediaItemView(image: "apple", name: "iOS Developer")
           }
           .padding(.leading)
           
@@ -39,30 +33,9 @@ struct ProfileView: View {
         .padding(24)
         
         VStack(alignment: .leading) {
-          HStack {
-            Image("instagram")
-              .resizable()
-              .frame(width: 27, height: 27)
-            Text("@arisupriatna1408")
-              .font(.system(size: 18))
-          }
-          
-          HStack {
-            Image("gmail")
-              .resizable()
-              .frame(width: 27, height: 27)
-            Text("arisupriatna703@gmail.com")
-              .font(.system(size: 18))
-          }
-          
-          HStack {
-            Image("linkedin")
-              .resizable()
-              .frame(width: 27, height: 27)
-            Text("Ari Supriatna")
-              .font(.system(size: 18))
-          }
-          
+          SocialMediaItemView(image: "instagram", name: "@arisupriatna1408")
+          SocialMediaItemView(image: "gmail", name: "arisupriatna703@gmail.com")
+          SocialMediaItemView(image: "linkedin", name: "Ari Supriatna")
           Divider()
             .padding(.top, 16)
         }
@@ -81,11 +54,5 @@ struct ProfileView: View {
         Spacer()
       }
     }
-  }
-}
-
-struct ProfileView_Previews: PreviewProvider {
-  static var previews: some View {
-    ProfileView()
   }
 }

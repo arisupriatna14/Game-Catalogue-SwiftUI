@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct GameListScreenshotView: View {
   var gameListScreenshots: [GameScreenshot]
@@ -30,19 +31,16 @@ struct ImageScreenshotView: View {
   
   var body: some View {
     VStack {
-      if imageViewModel.image != nil {
-        Image(uiImage: imageViewModel.image!)
-          .resizable()
-          .aspectRatio(contentMode: .fill)
-          .frame(width: 300, height: 150)
-          .cornerRadius(20)
-      } else {
-        ShimmerView(opacity: $opacity)
-          .frame(width: 300, height: 150)
-      }
-    }
-    .onAppear {
-      self.imageViewModel.loadImage(with: self.gameScreenshot.imageURL)
+      WebImage(url: self.gameScreenshot.imageURL)
+        .resizable()
+        .renderingMode(.original)
+        .placeholder(content: {
+          ShimmerView(opacity: $opacity)
+            .frame(width: 300, height: 150)
+        })
+        .aspectRatio(contentMode: .fill)
+        .frame(width: 300, height: 150)
+        .cornerRadius(20)
     }
   }
 }

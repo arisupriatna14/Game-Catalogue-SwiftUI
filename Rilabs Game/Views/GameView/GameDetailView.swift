@@ -8,19 +8,17 @@
 
 import SwiftUI
 import CoreData
+import SDWebImageSwiftUI
 
 struct GameDetailView: View {
   var game: Game
-  var showContent: Bool = true
-  @State var isFavorite = false
-  
   @Environment(\.managedObjectContext) private var managedObjectContext
-  @ObservedObject private var imageViewModel = ImageViewModel()
   @ObservedObject private var gameDetailViewModel = GameDetailViewModel()
   @ObservedObject private var gameListScreenshotsViewModel = GameListScreenshotViewModel()
+  @State private var isFavorite = false
   @State private var opacity: Double = 0.25
+  @State private var showMore: Bool = false
   private var favoriteRequest: FetchRequest<Favorite>
-  private var gameProvider: GameProvider = GameProvider()
   
   init(game: Game) {
     self.game = game
@@ -32,23 +30,16 @@ struct GameDetailView: View {
   }
   
   private func toogleFavorite() {
-    if let _ = self.favoriteRequest.wrappedValue.first?.id {
-      if !isFavorite {
-        isFavorite = true
-        addFavorite()
-      }
-    } else {
+    if !(self.favoriteRequest.wrappedValue.first?.id != nil) {
       isFavorite = true
       addFavorite()
     }
   }
   
   private func checkStatusFavorite() {
-    if let favoriteId = self.favoriteRequest.wrappedValue.first?.id {
-      if Int32(game.id) == favoriteId {
-        isFavorite = true
-      }
-    }  else {
+    if self.favoriteRequest.wrappedValue.first?.id != nil {
+      isFavorite = true
+    } else {
       isFavorite = false
     }
   }
@@ -64,13 +55,15 @@ struct GameDetailView: View {
           if gameDetailViewModel.game?.clip != nil {
             VideoPlayerView(url: (gameDetailViewModel.game?.clip?.clips.full)!)
               .frame(height: 280)
-          } else if imageViewModel.image != nil {
-            Image(uiImage: imageViewModel.image!)
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .frame(height: 280)
           } else {
-            ShimmerView(opacity: $opacity)
+            WebImage(url: self.game.backgroundImageURL)
+              .resizable()
+              .renderingMode(.original)
+              .placeholder(content: {
+                ShimmerView(opacity: $opacity)
+                  .frame(height: 280)
+              })
+              .aspectRatio(contentMode: .fill)
               .frame(height: 280)
           }
           
@@ -78,8 +71,11 @@ struct GameDetailView: View {
             HStack {
               Text("Rating: ")
                 .font(.headline)
-              Text("\(gameDetailViewModel.game?.ratingText ?? "-") ⭐️")
+              
+              RatingView(rating: "\(gameDetailViewModel.game?.ratingText ?? "-")")
+              
               Spacer()
+              
               Button(action: toogleFavorite) {
                 Image(systemName: "heart.fill")
                   .font(.system(size: 16, weight: .medium))
@@ -116,7 +112,14 @@ struct GameDetailView: View {
               .padding(.bottom, 8)
             
             Text("\(gameDetailViewModel.game?.descriptionRaw ?? "-")")
+              .lineLimit(self.showMore == false ? 5 : nil)
               .padding(.bottom, 8)
+            
+            if self.showMore == false {
+              Button(action: { withAnimation { self.showMore = true } }) {
+                Text("More")
+              }
+            }
           }
           .padding(.top, 16)
           .padding([.leading, .trailing, .bottom], 24)
@@ -141,20 +144,22 @@ struct GameDetailView: View {
     }
     .onAppear {
       self.checkStatusFavorite()
-      self.gameDetailViewModel.loadGame(id: self.game.id)
-      self.gameListScreenshotsViewModel.loadGameScreenshots(id: self.game.id)
-      self.imageViewModel.loadImage(with: self.game.backgroundImageURL)
+      if !(self.gameDetailViewModel.game != nil) && !(self.gameListScreenshotsViewModel.gameScreenshot != nil) {
+        self.gameDetailViewModel.loadGame(id: self.game.id)
+        self.gameListScreenshotsViewModel.loadGameScreenshots(id: self.game.id)
+      }
     }
   }
   
   private func addFavorite() {
     let newFavorite = Favorite(context: managedObjectContext)
-    
+
     newFavorite.id = Int32(game.id)
     newFavorite.name = game.name
     newFavorite.released = game.released
     newFavorite.backgroundImage = game.backgroundImage
-    
+    newFavorite.rating = game.rating
+
     saveContext()
   }
   
