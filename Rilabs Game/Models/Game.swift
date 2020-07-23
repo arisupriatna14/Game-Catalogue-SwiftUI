@@ -12,12 +12,13 @@ struct GameResponse: Decodable {
   let results: [Game]
 }
 
-struct Game: Decodable, Identifiable, Hashable {
+struct Game: Decodable, Identifiable {
   let id: Int
   let name: String
   let released: String?
   let backgroundImage: String?
   let rating: Double
+  let clip: GameClip?
   
   var backgroundImageURL: URL {
     guard let backgroundImage = backgroundImage else { return URL(string: Constant.imagePlaceholder)! }

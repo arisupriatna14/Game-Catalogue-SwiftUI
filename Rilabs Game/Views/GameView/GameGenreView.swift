@@ -23,4 +23,3 @@ struct GenreText: View {
     Text("🎮 \(genre.name)")
   }
 }
-

@@ -49,12 +49,15 @@ struct HomeView: View {
           }
         } else {
           LoadingView()
+            .offset(x: 0, y: 278)
         }
       }
       .padding(.bottom, 30)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .onAppear {
-        self.gameListViewModel.loadGames()
+        if !(self.gameListViewModel.games?.count ?? 0 > 0) {
+          self.gameListViewModel.loadGames()
+        }
       }
     }
   }

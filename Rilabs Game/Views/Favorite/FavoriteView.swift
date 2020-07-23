@@ -32,7 +32,7 @@ struct FavoriteView: View {
             id: Int(favorite.id),
             name: favorite.name ?? "",
             released: favorite.released,
-            backgroundImage: favorite.backgroundImage, rating: 0)
+            backgroundImage: favorite.backgroundImage, rating: 0, clip: nil)
           )) {
             FavoriteItemView(favoriteViewModel: FavoriteGameViewModel(favorite: favorite))
           }

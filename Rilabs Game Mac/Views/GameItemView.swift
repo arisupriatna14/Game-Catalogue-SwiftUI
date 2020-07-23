@@ -11,6 +11,7 @@ import SwiftUI
 struct GameItemView: View {
   var game: Game
   @ObservedObject private var imageViewModel = ImageViewModel()
+  @State private var opacity = 0.25
   
   var body: some View {
     Group {
@@ -32,10 +33,8 @@ struct GameItemView: View {
             .font(.system(size: 16, weight: .light, design: .rounded))
         }
       } else {
-        Rectangle()
-          .background(Color.gray.opacity(0.2))
+        ShimmerView(opacity: $opacity)
           .frame(width: 300, height: 250)
-          .cornerRadius(30)
       }
     }
     .onAppear {

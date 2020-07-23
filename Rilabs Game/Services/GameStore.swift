@@ -9,7 +9,7 @@
 import Foundation
 
 class GameStore: GameService {
-
+  
   static let shared = GameStore()
   
   private let baseURL = "https://api.rawg.io/api/games"
@@ -22,7 +22,11 @@ class GameStore: GameService {
       return
     }
     
-    self.loadURLAndDecodeData(url: url, completion: completion)
+    let queryItems = [
+      URLQueryItem(name: "page_size", value: "8")
+    ]
+    
+    self.loadURLAndDecodeData(url: url, params: queryItems, completion: completion)
   }
   
   func fetchGame(id: Int, completion: @escaping (Result<GameDetailResponse, GameError>) -> ()) {
@@ -52,6 +56,22 @@ class GameStore: GameService {
     }
     
     self.loadURLAndDecodeData(url: url, completion: completion)
+  }
+  
+  func fetchUpcomingGames(completion: @escaping (Result<GameResponse, GameError>) -> ()) {
+    guard let url = URL(string: "\(baseURL)") else {
+      completion(.failure(.invalidEndpoint))
+      return
+    }
+    
+    print(url)
+    let queryItems = [
+      URLQueryItem(name: "ordering", value: "\(Ordering.popularity)"),
+      URLQueryItem(name: "page_size", value: "5"),
+      URLQueryItem(name: "dates", value: "\(DateUtils.currentDate),\(DateUtils.nextYear)")
+    ]
+    
+    self.loadURLAndDecodeData(url: url, params: queryItems, completion: completion)
   }
   
   private func loadURLAndDecodeData<T: Decodable>(url: URL, params: [URLQueryItem]? = nil,  completion: @escaping (Result<T, GameError>) -> ()) {
@@ -94,5 +114,52 @@ class GameStore: GameService {
     DispatchQueue.main.async {
       completion(result)
     }
+  }
+}
+
+private enum Ordering: String {
+  case added = "added"
+  case rating = "rating"
+  case released = "released"
+  case popularity = "popularity"
+}
+
+struct DateUtils {
+  static var currentDate: String {
+    let date = Date()
+    
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    
+    return formatter.string(from: date)
+  }
+  
+  static var nextYear: String {
+    var dateComponents = DateComponents()
+    dateComponents.year = 1
+    
+    let currentYear = Date()
+    let nextYear = Calendar.current.date(byAdding: dateComponents, to: currentYear)!
+    
+    return nextYear.formatAsString
+  }
+  
+  static var lastMonth: String {
+    var dateComponents = DateComponents()
+    dateComponents.month = -1
+    
+    let current = Date()
+    let lastMonth = Calendar.current.date(byAdding: dateComponents, to: current);
+    
+    return lastMonth?.formatAsString ?? ""
+  }
+}
+
+extension Date {
+  var formatAsString: String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    
+    return formatter.string(from: self)
   }
 }

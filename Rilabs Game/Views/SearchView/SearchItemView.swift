@@ -11,6 +11,7 @@ import SDWebImageSwiftUI
 
 struct SearchItemView: View {
   var game: Game
+  var size: CGSize = CGSize(width: 100, height: 100)
   @State private var opacity: Double = 0.25
   
   var body: some View {
@@ -20,10 +21,10 @@ struct SearchItemView: View {
         .renderingMode(.original)
         .placeholder(content: {
           ShimmerView(opacity: $opacity)
-            .frame(width: 100, height: 100)
+            .frame(width: size.width, height: size.height)
         })
         .aspectRatio(contentMode: .fill)
-        .frame(width: 100, height: 100)
+        .frame(width: size.width, height: size.height)
         .cornerRadius(20)
       
       VStack(alignment: .leading) {

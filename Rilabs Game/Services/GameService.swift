@@ -13,6 +13,7 @@ protocol GameService {
   func fetchGame(id: Int, completion: @escaping (Result<GameDetailResponse, GameError>) -> ())
   func searchGame(query: String, completion: @escaping (Result<GameResponse, GameError>) -> ())
   func fetchGameScreenshots(id: Int, completion: @escaping (Result<GameScreenshotResponse, GameError>) -> ())
+  func fetchUpcomingGames(completion: @escaping (Result<GameResponse, GameError>) -> ())
 }
 
 enum GameError: Error {

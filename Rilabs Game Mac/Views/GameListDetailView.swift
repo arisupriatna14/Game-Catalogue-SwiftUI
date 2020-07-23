@@ -13,15 +13,18 @@ struct GameListDetailView: View {
   @Binding var selectedGame: Game?
   
   var body: some View {
-    List(selection: self.$selectedGame) {
+    ZStack {
       if gameListViewModel.isLoading {
         LoadingView()
+        .zIndex(1)
       }
       
-      if self.gameListViewModel.games != nil {
-        ForEach(self.gameListViewModel.games!) { game in
-          GameItemRowView(game: game)
-            .tag(game)
+      List(selection: self.$selectedGame) {
+        if self.gameListViewModel.games != nil {
+          ForEach(self.gameListViewModel.games!) { game in
+            GameItemRowView(game: game)
+              .tag(game)
+          }
         }
       }
     }

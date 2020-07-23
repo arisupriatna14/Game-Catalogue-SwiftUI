@@ -37,7 +37,8 @@ struct GameDetailView: View {
           } else {
             Rectangle()
               .fill(Color.gray.opacity(0.2))
-              .frame(height: 280)
+              .frame(height: 300)
+              .cornerRadius(20)
           }
           
           VStack(alignment: .leading) {
@@ -93,6 +94,7 @@ struct GameDetailView: View {
           }
         } else {
           LoadingView()
+            .offset(x: 0, y: 278)
         }
       }
       .frame(minWidth: 556, maxWidth: 556, maxHeight: .infinity)
